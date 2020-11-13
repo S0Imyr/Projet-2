@@ -40,13 +40,12 @@ def extract(url, category):
         image_url = "http://books.toscrape.com/" + \
                     soup.find("div", {"class": "item active"}
                               ).findChild("img").get("src")[5:]
+    else:
+        upc = title = price_tax = price = nb_available = "erreur d'extraction"
+        description = rating = image_url = "erreur d'extraction"
     r = {"product_page_url": url, "universal_ product_code (upc)":
          upc, "title": title, "price_including_tax": price_tax,
          "price_excluding_tax": price, "number_available": nb_available,
          "product_description": description, "category": category,
          "review_rating": rating, "image_url": image_url}
     return r
-
-
-print(extract("http://books.toscrape.com/catalogue"
-              "/its-only-the-himalayas_981/index.html", "Travel"))
