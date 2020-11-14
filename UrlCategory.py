@@ -39,9 +39,12 @@ def browse_page(url):   # Itérer les pages
     url_base = url[:-10]
     i = 1
     test = True
+    reponse = {}
     while test:
-        soup = requete.requete_text(url)
-        # Scrap des liens
+        soup = requete.requete_text(url)  # Scrap des liens
+        d = page_livre_url(soup)
+        reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None
         i += 1
         url = url_base + "page-" + str(i)+".html"
+    return reponse
