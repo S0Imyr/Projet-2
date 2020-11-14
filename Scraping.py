@@ -40,8 +40,11 @@ def extract(url, category):
     price_tax = tab[2].text[1:]
     price = tab[3].text[1:]
     nb_available = available(tab)
-    description = soup.find("div", {"id": "product_description"}
-                            ).find_next("p").text
+    if soup.find("div", {"id": "product_description"}) is None:
+        description = ""
+    else:
+        description = soup.find("div", {"id": "product_description"}
+                                ).find_next("p").text
     rating = find_rating(soup)
     image_url = "http://books.toscrape.com/" + \
                 soup.find("div", {"class": "item active"}
