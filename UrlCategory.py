@@ -33,7 +33,7 @@ category = 'Travel'
 url = 'http://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 url_base = url[:-10]
 i = 1
-test = True
+test = False
 while test:
     test = soup.find("li", {"class": "next"}) is not None
     i += 1

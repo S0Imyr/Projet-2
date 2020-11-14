@@ -10,6 +10,26 @@ def available(table):
     return reponse
 
 
+def find_rating(soupe):
+    rating = 0
+    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+            "p", {"class": "star-rating One"}) is not None:
+        rating = 1
+    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+            "p", {"class": "star-rating Two"}) is not None:
+        rating = 2
+    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+            "p", {"class": "star-rating Three"}) is not None:
+        rating = 3
+    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+            "p", {"class": "star-rating Four"}) is not None:
+        rating = 4
+    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+            "p", {"class": "star-rating Five"}) is not None:
+        rating = 5
+    return rating
+
+
 def extract(url, category):
     soup = requete.requete_text(url)
     tab = soup.find("table", {"class": "table table-striped"}
@@ -22,26 +42,10 @@ def extract(url, category):
     nb_available = available(tab)
     description = soup.find("div", {"id": "product_description"}
                             ).find_next("p").text
-    rating = 0
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Ont"}) is not None:
-        rating = 1
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Two"}) is not None:
-        rating = 2
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Three"}) is not None:
-        rating = 3
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Four"}) is not None:
-        rating = 4
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Five"}) is not None:
-        rating = 5
+    rating = find_rating(soup)
     image_url = "http://books.toscrape.com/" + \
                 soup.find("div", {"class": "item active"}
                           ).findChild("img").get("src")[5:]
-
     r = {"product_page_url": url, "universal_ product_code (upc)":
          upc, "title": title, "price_including_tax": price_tax,
          "price_excluding_tax": price, "number_available": nb_available,
