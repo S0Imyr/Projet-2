@@ -3,14 +3,16 @@ import requests
 from bs4 import BeautifulSoup
 
 
-url = "http://books.toscrape.com/index.html"
+home = "http://books.toscrape.com/index.html"
 
 # Recherche des catégories
 categories_url = {}
-reponse = requests.get(url)
+reponse = requests.get(home)
 reponse.encoding = 'utf-8'
 if reponse.ok:
     soup = BeautifulSoup(reponse.text, "html.parser")
+else:
+    soup = "page non lue par la requête"
 
 
 def category_no_space(texte):
@@ -21,13 +23,25 @@ def category_no_space(texte):
 
 secteur = soup.find("ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
 k = 5
-while k == 5:
+while k == 5:   # S'adapte si nouvelles catégories
     categories_url[category_no_space(secteur)] = "http://books.toscrape.com/"+secteur.get("href")
     secteur = secteur.find_next("a")
     k = len(secteur.text.split("\n"))
 
 print(categories_url)
 # fonction Scraper page url
+# def scrap_category(category,url):
 
-# Iterer les pages
-# fonction Controle s'il y a une classe next
+
+# Itérer les pages
+category = 'Travel'
+url = 'http://books.toscrape.com/catalogue/category/books/travel_2/index.html'
+url_base = url[:-10]
+i = 1
+test = True
+while test:
+    test = soup.find("li", {"class": "next"}) is not None
+    i += 1
+    url = url_base + "page-" + str(i)+".html"
+    print(url)   # Test
+# fonction Controle s'il y a une class next
