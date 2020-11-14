@@ -35,16 +35,16 @@ def page_livre_url(soupe):  # fonction Scraper les livres et leurs url pour une 
     return reponse
 
 
-def browse_page(url):   # Itérer les pages
-    url_base = url[:-10]
+def browse_page(url_category):   # Itérer les pages
+    url_base = url_category[:-10]
     i = 1
     test = True
     reponse = {}
     while test:
-        soup = requete.requete_text(url)  # Scrap des liens
+        soup = requete.requete_text(url_category)  # Scrap des liens
         d = page_livre_url(soup)
         reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None
         i += 1
-        url = url_base + "page-" + str(i)+".html"
+        url_category = url_base + "page-" + str(i) + ".html"
     return reponse
