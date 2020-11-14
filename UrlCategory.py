@@ -25,7 +25,8 @@ def page_livre_url(soupe):  # fonction Scraper les livres et leurs url pour une 
     livre = soupe.find("h3")
     test = True
     while test:
-        reponse[livre.find("a").get("title")] = livre.find("a").get("href")
+        lien = livre.find("a").get("href")[8:]
+        reponse[livre.find("a").get("title")] = "http://books.toscrape.com/catalogue" + lien
         test = livre.find_next("h3") is not None
         livre = livre.find_next("h3")
     return reponse
