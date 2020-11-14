@@ -1,18 +1,13 @@
 # -- coding: utf-8 --
-import requests
-from bs4 import BeautifulSoup
+import requete
 
 
 home = "http://books.toscrape.com/index.html"
 
 # Recherche des catégories
 categories_url = {}
-reponse = requests.get(home)
-reponse.encoding = 'utf-8'
-if reponse.ok:
-    soup = BeautifulSoup(reponse.text, "html.parser")
-else:
-    soup = "page non lue par la requête"
+
+soup = requete.requete_text(home)
 
 
 def category_no_space(texte):
