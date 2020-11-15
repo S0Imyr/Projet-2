@@ -7,6 +7,8 @@ print(UrlCategory.scrap_category(home))
 
 for category in UrlCategory.scrap_category(home):
     WriteCSV.init_category_csv(category)
-    url_category = UrlCategory.browse_page(UrlCategory.scrap_category(home)[category])
+    url_category = UrlCategory.browse_page(
+        UrlCategory.scrap_category(home)[category])
     for livre in url_category:
-        WriteCSV.write_csv(Scraping.extract(url_category[livre], category), category)
+        WriteCSV.write_csv(Scraping.extract(
+            url_category[livre], category), category)

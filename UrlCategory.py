@@ -11,22 +11,25 @@ def category_no_space(texte):
 def scrap_category(url_home):  # Recherche des catégories
     categories_url = {}
     soup_home = requete.requete_text(url_home)
-    secteur = soup_home.find("ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
+    secteur = soup_home.find(
+        "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
     while k == 5:   # S'adapte si nouvelles catégories
-        categories_url[category_no_space(secteur)] = "http://books.toscrape.com/"+secteur.get("href")
+        categories_url[category_no_space(
+            secteur)] = "http://books.toscrape.com/"+secteur.get("href")
         secteur = secteur.find_next("a")
         k = len(secteur.text.split("\n"))
     return categories_url
 
 
-def page_livre_url(soupe):  # fonction Scraper les livres et leurs url pour une page
+def page_livre_url(soupe):  # Scraper livres et leurs url pour une page
     reponse = {}
     livre = soupe.find("h3")
     test = True
     while test:
         lien = livre.find("a").get("href")[8:]
-        reponse[livre.find("a").get("title")] = "http://books.toscrape.com/catalogue" + lien
+        reponse[livre.find("a").get(
+            "title")] = "http://books.toscrape.com/catalogue" + lien
         test = livre.find_next("h3") is not None
         livre = livre.find_next("h3")
     return reponse
