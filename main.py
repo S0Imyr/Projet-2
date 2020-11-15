@@ -1,14 +1,18 @@
 import Scraping
 import UrlCategory
-import WriteCSV
+import Write_csv
+import urllib
 
 home = "http://books.toscrape.com/index.html"
 print(UrlCategory.scrap_category(home))
 
 for category in UrlCategory.scrap_category(home):
-    WriteCSV.init_category_csv(category)
+    Write_csv.init_category_csv(category)
     url_category = UrlCategory.browse_page(
         UrlCategory.scrap_category(home)[category])
     for livre in url_category:
-        WriteCSV.write_csv(Scraping.extract(
+        Write_csv.write_csv(Scraping.extract(
             url_category[livre], category), category)
+        print(Scraping.extract(url_category[livre], category)['image_url'])
+        format_title = str(livre).replace("/","").replace('\\',"").replace(":", "").replace("*","").replace("\"","").replace("<","").replace(">","").replace("?","")  #caractère gênant dans les nom de fichiers
+        urllib.request.urlretrieve(Scraping.extract(url_category[livre], category)['image_url'], "Images/" + format_title[:min(50, len(str(format_title)))] + ".jpg")

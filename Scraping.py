@@ -46,7 +46,7 @@ def extract(url, category):
         description = soup.find("div", {"id": "product_description"}
                                 ).find_next("p").text
     rating = find_rating(soup)
-    image_url = "http://books.toscrape.com/" + \
+    image_url = "http://books.toscrape.com" + \
                 soup.find("div", {"class": "item active"}
                           ).findChild("img").get("src")[5:]
     r = {"product_page_url": url, "universal_ product_code (upc)":
