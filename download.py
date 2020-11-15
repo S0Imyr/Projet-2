@@ -4,7 +4,7 @@ import Write_csv
 import urllib
 
 
-def create_csv(home):
+def create_csv_cat(home):
     for category in UrlCategory.scrap_category(home):
         Write_csv.init_category_csv(category)
         url_category = UrlCategory.browse_page(
@@ -13,6 +13,15 @@ def create_csv(home):
             Write_csv.write_csv(Scraping.extract(
                 url_category[livre], category), category)
 
+
+def create_csv(home):
+    Write_csv.init_category_csv("0 Books")
+    for category in UrlCategory.scrap_category(home):
+        url_category = UrlCategory.browse_page(
+            UrlCategory.scrap_category(home)[category])
+        for livre in url_category:
+            Write_csv.write_csv(Scraping.extract(
+                url_category[livre], category), "0 Books")
 
 def images(home):
     for category in UrlCategory.scrap_category(home):
