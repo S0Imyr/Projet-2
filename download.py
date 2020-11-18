@@ -2,10 +2,13 @@ import Scraping
 import UrlCategory
 import Write_csv
 import urllib
+import os
 
 
-def create_csv_cat(home):
+def create_file_cat(home):
     for category in UrlCategory.scrap_category(home):
+        if not os.path.exists('Data/'+category):
+            os.mkdir('Data/'+category)
         Write_csv.init_category_csv(category)
         url_category = UrlCategory.browse_page(
             UrlCategory.scrap_category(home)[category])

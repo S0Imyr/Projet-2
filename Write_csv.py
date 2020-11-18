@@ -2,7 +2,7 @@ import csv
 
 
 def init_category_csv(category):
-    with open('CSV/'+str(category)+'.csv',
+    with open('Data/'+category+'/'+category+'.csv',
               'w', newline='', encoding="utf-8") as csvfile:
         csvfile.write("sep = ,\n")
         fieldnames = ['product_page_url',
@@ -16,7 +16,7 @@ def init_category_csv(category):
 
 
 def write_csv(dico, category):
-    with open('CSV/'+str(category)+'.csv', 'a',
+    with open('Data/'+category+'/'+category+'.csv', 'a',
               newline='', encoding="utf-8") as csvfile:
         fieldnames = ['product_page_url',
                       'universal_ product_code (upc)',
@@ -27,4 +27,3 @@ def write_csv(dico, category):
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, dialect='excel')
         writer.writerow(dico)
-
