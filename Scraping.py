@@ -33,18 +33,18 @@ def find_rating(soupe):
 def extract(url, category):
     soup = requete.requete_text(url)
     if soup.find("table", {"class": "table table-striped"}
-                    ).find_all("td") is None :
+                 ).find_all("td") is None:
         tab = ["tableau non trouvé"]*7
     else:
         tab = soup.find("table", {"class": "table table-striped"}
-                    ).find_all("td")
+                        ).find_all("td")
 
     if soup.find("div", {"class": "col-sm-6 product_main"}
-                      ).find("h1").text is None :
+                 ).find("h1").text is None:
         title = "titre non trouvé lors de l'extraction"
     else:
         title = soup.find("div", {"class": "col-sm-6 product_main"}
-                      ).find("h1").text
+                          ).find("h1").text
 
     upc = tab[0].text
     price_tax = tab[2].text[1:]
@@ -57,7 +57,7 @@ def extract(url, category):
                                 ).find_next("p").text
     rating = find_rating(soup)
     if soup.find("div", {"class": "item active"}
-                 ).findChild("img").get("src")[5:] is None :
+                 ).findChild("img").get("src")[5:] is None:
         image_url = "image non trouvée (extraction)"
     else:
         image_url = "http://books.toscrape.com" + \

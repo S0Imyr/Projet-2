@@ -41,8 +41,11 @@ def page_livre_url(soupe):  # Scraper livres et leurs url pour une page
     test = True
     while test:
         lien = livre.find("a").get("href")[8:]
-        reponse[livre.find("a").get(
-            "title")] = "http://books.toscrape.com/catalogue" + lien
+        if livre.find("a").get("title") in reponse:
+            titre = livre.find("a").get("title") + "bis"
+        else:
+            titre = livre.find("a").get("title")
+        reponse[titre] = "http://books.toscrape.com/catalogue" + lien
         test = livre.find_next("h3") is not None
         livre = livre.find_next("h3")
     return reponse

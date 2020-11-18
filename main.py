@@ -12,8 +12,4 @@ if not os.path.exists('Data'):
 
 download.create_file_cat(home)
 download.images(home)
-#download.create_csv(home)
-
-
-
-
+# download.create_csv(home)
