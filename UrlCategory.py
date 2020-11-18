@@ -61,3 +61,6 @@ def browse_page(url_category):   # Itérer les pages
         i += 1
         url_category = url_base + "page-" + str(i) + ".html"
     return reponse
+
+# home = "http://books.toscrape.com/index.html"
+# print(browse_page(scrap_category(home)['Fantasy']))
