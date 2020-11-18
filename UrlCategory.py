@@ -22,6 +22,19 @@ def scrap_category(url_home):  # Recherche des catégories
     return categories_url
 
 
+"""
+u=[]
+s=0
+for k in scrap_category("http://books.toscrape.com/index.html").values():
+    soupe=requete.requete_text(k)
+    u.append(soupe.find("form", {"class": "form-horizontal"}).find("strong").text)
+    s=s+int(soupe.find("form", {"class": "form-horizontal"}).find("strong").text)
+
+print(u)
+print(s)
+"""
+
+
 def page_livre_url(soupe):  # Scraper livres et leurs url pour une page
     reponse = {}
     livre = soupe.find("h3")
