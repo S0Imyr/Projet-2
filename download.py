@@ -18,6 +18,8 @@ def create_file_cat(home):
 
 
 def create_csv(home):
+    if not os.path.exists('Data/0 Books'):
+        os.mkdir('Data/0 Books')
     Write_csv.init_category_csv("0 Books")
     for category in UrlCategory.scrap_category(home):
         url_category = UrlCategory.browse_page(
@@ -25,6 +27,7 @@ def create_csv(home):
         for livre in url_category:
             Write_csv.write_csv(Scraping.extract(
                 url_category[livre], category), "0 Books")
+
 
 def images(home):
     for category in UrlCategory.scrap_category(home):
