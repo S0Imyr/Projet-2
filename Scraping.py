@@ -32,10 +32,20 @@ def find_rating(soupe):
 
 def extract(url, category):
     soup = requete.requete_text(url)
-    tab = soup.find("table", {"class": "table table-striped"}
+    if soup.find("table", {"class": "table table-striped"}
+                    ).find_all("td") is None :
+        tab = ["tableau non trouvé"]*7
+    else:
+        tab = soup.find("table", {"class": "table table-striped"}
                     ).find_all("td")
-    title = soup.find("div", {"class": "col-sm-6 product_main"}
+
+    if soup.find("div", {"class": "col-sm-6 product_main"}
+                      ).find("h1").text is None :
+        title = "titre non trouvé lors de l'extraction"
+    else:
+        title = soup.find("div", {"class": "col-sm-6 product_main"}
                       ).find("h1").text
+
     upc = tab[0].text
     price_tax = tab[2].text[1:]
     price = tab[3].text[1:]
@@ -46,7 +56,11 @@ def extract(url, category):
         description = soup.find("div", {"id": "product_description"}
                                 ).find_next("p").text
     rating = find_rating(soup)
-    image_url = "http://books.toscrape.com" + \
+    if soup.find("div", {"class": "item active"}
+                 ).findChild("img").get("src")[5:] is None :
+        image_url = "image non trouvée (extraction)"
+    else:
+        image_url = "http://books.toscrape.com" + \
                 soup.find("div", {"class": "item active"}
                           ).findChild("img").get("src")[5:]
     r = {"product_page_url": url, "universal_ product_code (upc)":
