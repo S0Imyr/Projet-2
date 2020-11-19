@@ -3,6 +3,11 @@ import requete
 
 
 def category_no_space(texte):
+    """
+    enlève l'espace et les sauts de lignes
+    :param texte: catégorie
+    :return: catégorie propre sans espace
+    """
     category = texte.text.split("\n")
     category = category[2].replace(" ", "")
     return category
@@ -10,10 +15,10 @@ def category_no_space(texte):
 
 def scrap_category(url_home):
     """
-    Recherche des catégories
-    S'adapte si nouvelles catégories
-    :param url_home:
-    :return:
+    Recherche des catégories sur la page d'accueil
+    s'adapte si nouvelles catégories sont ajoutées
+    :param url_home: page d'accueil
+    :return: le dictionnaire qui à la catégorie associe son url
     """
     categories_url = {}
     soup_home = requete.requete_text(url_home)
@@ -30,9 +35,10 @@ def scrap_category(url_home):
 
 def page_livre_url(soupe):
     """
-    Scraper livres et leurs url pour une page
+    Extrait les livres et leurs url pour une page
     :param soupe (beautifulsoup) de la page
     :return: un dictionnaire qui à un titre associe son url
+    pour les livres de la page
     """
     reponse = {}
     livre = soupe.find("h3")
@@ -51,10 +57,12 @@ def page_livre_url(soupe):
 
 def browse_page(url_category):
     """
-    Itérer les pages
-    Scrap des liens
-    :param url_category:
-    :return:
+    Parcourt les pages d'une catégorie
+    pour extraire tous les liens
+    des livres de la catégorie
+    :param url_category: l'url de la catégorie
+    :return: un dictionnaire qui à un titre associe son url
+    pour tous les livres de la catégorie
     """
     url_base = url_category[:-10]
     i = 1

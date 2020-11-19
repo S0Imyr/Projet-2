@@ -3,6 +3,13 @@ import requete
 
 
 def available(table):
+    """
+    Extrait dans un tableau la phrase sur
+    la disponibilité.
+    Puis extrait le nombre de la phrase
+    :param table: tableau d'informations du livre
+    :return: le nombre d'exemplaire disponible
+    """
     reponse = ""
     for k in table[5].text:
         if k.isnumeric():
@@ -11,6 +18,12 @@ def available(table):
 
 
 def find_rating(soupe):
+    """
+    Cherche la note d'un livre dans la soupe
+    d'un beautifulsoup d'une page de livre
+    :param soupe: beautifulsoup d'une page de livre
+    :return: note du livre
+    """
     rating = 0
     if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating One"}) is not None:
@@ -31,6 +44,12 @@ def find_rating(soupe):
 
 
 def extract(url, category):
+    """
+    extrait les informations d'un livre
+    :param url: url du livre
+    :param category: catégorie du livre
+    :return: dictionnaire des informations du livre
+    """
     soup = requete.requete_text(url)
     if soup.find("table", {"class": "table table-striped"}
                  ).find_all("td") is None:
