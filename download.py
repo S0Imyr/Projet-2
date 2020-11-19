@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 
 def create_file_cat(home):
-    print("Nombre de catégorie dont le csv est créé")
+    print("Nombre de catégories dont le csv est créé")
     for category in tqdm(UrlCategory.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
@@ -20,7 +20,7 @@ def create_file_cat(home):
 
 
 def create_csv(home):
-    print("Nombre de catégorie dont l'image est téléchargée")
+    print("Nombre de catégories dont l'image est téléchargée")
     if not os.path.exists('Data/0 Books'):
         os.mkdir('Data/0 Books')
     Write_csv.init_category_csv("0 Books")

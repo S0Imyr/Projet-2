@@ -1,15 +1,10 @@
-import UrlCategory
 import download
 import os
 
 
-home = "http://books.toscrape.com/index.html"
-print(UrlCategory.scrap_category(home))
-
-if not os.path.exists('Data'):
-    os.mkdir('Data')
-
-
-download.create_file_cat(home)
-download.images(home)
-# download.create_csv(home)
+if __name__ == "__main__":
+    home = "http://books.toscrape.com/index.html"
+    if not os.path.exists('Data'):
+        os.mkdir('Data')
+    download.create_file_cat(home)
+    download.images(home)

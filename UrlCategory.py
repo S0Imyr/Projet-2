@@ -8,13 +8,19 @@ def category_no_space(texte):
     return category
 
 
-def scrap_category(url_home):  # Recherche des catégories
+def scrap_category(url_home):
+    """
+    Recherche des catégories
+    S'adapte si nouvelles catégories
+    :param url_home:
+    :return:
+    """
     categories_url = {}
     soup_home = requete.requete_text(url_home)
     secteur = soup_home.find(
         "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
-    while k == 5:   # S'adapte si nouvelles catégories
+    while k == 5:
         categories_url[category_no_space(
             secteur)] = "http://books.toscrape.com/"+secteur.get("href")
         secteur = secteur.find_next("a")
@@ -22,20 +28,12 @@ def scrap_category(url_home):  # Recherche des catégories
     return categories_url
 
 
-"""
-u=[]
-s=0
-for k in scrap_category("http://books.toscrape.com/index.html").values():
-    soupe=requete.requete_text(k)
-    u.append(soupe.find("form", {"class": "form-horizontal"}).find("strong").text)
-    s=s+int(soupe.find("form", {"class": "form-horizontal"}).find("strong").text)
-
-print(u)
-print(s)
-"""
-
-
-def page_livre_url(soupe):  # Scraper livres et leurs url pour une page
+def page_livre_url(soupe):
+    """
+    Scraper livres et leurs url pour une page
+    :param soupe (beautifulsoup) de la page
+    :return: un dictionnaire qui à un titre associe son url
+    """
     reponse = {}
     livre = soupe.find("h3")
     test = True
@@ -51,19 +49,22 @@ def page_livre_url(soupe):  # Scraper livres et leurs url pour une page
     return reponse
 
 
-def browse_page(url_category):   # Itérer les pages
+def browse_page(url_category):
+    """
+    Itérer les pages
+    Scrap des liens
+    :param url_category:
+    :return:
+    """
     url_base = url_category[:-10]
     i = 1
     test = True
     reponse = {}
     while test:
-        soup = requete.requete_text(url_category)  # Scrap des liens
+        soup = requete.requete_text(url_category)
         d = page_livre_url(soup)
         reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None
         i += 1
         url_category = url_base + "page-" + str(i) + ".html"
     return reponse
-
-# home = "http://books.toscrape.com/index.html"
-# print(browse_page(scrap_category(home)['Fantasy']))
