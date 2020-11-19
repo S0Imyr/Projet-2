@@ -3,10 +3,12 @@ import UrlCategory
 import Write_csv
 import urllib
 import os
+from tqdm import tqdm
 
 
 def create_file_cat(home):
-    for category in UrlCategory.scrap_category(home):
+    print("Nombre de catégorie dont le csv est créé")
+    for category in tqdm(UrlCategory.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
         Write_csv.init_category_csv(category)
@@ -18,6 +20,7 @@ def create_file_cat(home):
 
 
 def create_csv(home):
+    print("Nombre de catégorie dont l'image est téléchargée")
     if not os.path.exists('Data/0 Books'):
         os.mkdir('Data/0 Books')
     Write_csv.init_category_csv("0 Books")
@@ -30,7 +33,7 @@ def create_csv(home):
 
 
 def images(home):
-    for category in UrlCategory.scrap_category(home):
+    for category in tqdm(UrlCategory.scrap_category(home)):
         url_category = UrlCategory.browse_page(
             UrlCategory.scrap_category(home)[category])
         if not os.path.exists("Data/"+category + "/Images"):
