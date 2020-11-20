@@ -14,7 +14,7 @@ def create_file_cat(home):
     puis sur l'ensemble des livres de la catégorie
     extrait puis écris sur le csv les données de chaque livre
     :param home: page d'accueil
-    :return:
+    :return:vide
     """
     print("Nombre de catégories dont le csv est créé")
     for category in tqdm(UrlCategory.scrap_category(home)):
@@ -38,19 +38,19 @@ def images(home):
     de chaque livre en la nommant en retirant les
     caractères interdits et avec 50 caractères maximum
     :param home: page d'accueil
-    :return:
+    :return: vide
     """
+    print("Nombre d'images téléchargée")
     for category in tqdm(UrlCategory.scrap_category(home)):
         url_category = UrlCategory.browse_page(
             UrlCategory.scrap_category(home)[category])
         if not os.path.exists("Data/"+category + "/Images"):
             os.mkdir("Data/"+category + "/Images")
         for livre in url_category:
-            format_title = str(livre).replace("/", "").replace(
-                '\\', "").replace(":", "").replace(
-                "*", "").replace("\"", "").replace(
-                "<", "").replace(">", "").replace(
-                "?", "").replace("|", "")
+            interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
+            format_title = str(livre)
+            for k in interdit:
+                format_title = format_title.replace(k, "")
             urllib.request.urlretrieve(
                 Scraping.extract(url_category[livre], category)
                 ['image_url'], "Data/"+category+"/Images/" + format_title[:min(
