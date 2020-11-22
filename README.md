@@ -3,10 +3,6 @@
 <b>Copier les fichiers :</b> <br>
 Sur le terminal tapper : <br>
 <ul>
-    <li>git remote add Scrap https://github.com/S0Imyr/Projet2.git</li>
-</ul>
-Puis : <br>
-<ul>
     <li>git clone https://github.com/S0Imyr/Projet2.git </li>
 </ul>
 <br>
