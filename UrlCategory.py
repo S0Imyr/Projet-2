@@ -10,7 +10,7 @@ def scrap_category(url_home):
     :return: le dictionnaire qui à la catégorie associe son url
     """
     categories_url = {}
-    soup_home = requete.requete_text(url_home)
+    soup_home = requete.request_text(url_home)
     secteur = soup_home.find(
         "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
@@ -58,7 +58,7 @@ def browse_page(url_category):
     test = True
     reponse = {}
     while test:
-        soup = requete.requete_text(url_category)
+        soup = requete.request_text(url_category)
         d = page_livre_url(soup)
         reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None

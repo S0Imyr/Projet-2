@@ -50,7 +50,7 @@ def extract(url, category):
     :param category: catégorie du livre
     :return: dictionnaire des informations du livre
     """
-    soup = requete.requete_text(url)
+    soup = requete.request_text(url)
     if soup.find("table", {"class": "table table-striped"}
                  ).find_all("td") is None:
         tab = ["tableau non trouvé"]*7

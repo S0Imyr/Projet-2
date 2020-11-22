@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def requete_text(url):
+def request_text(url):
     """
     Teste si un url est accessible puis créé une soupe avec beautiful soup
     :param url: l'url de la page
