@@ -1,5 +1,5 @@
 import scraping
-import UrlCategory
+import scrap_category
 import write_csv
 import urllib
 import os
@@ -17,12 +17,12 @@ def create_file_cat(home):
     :return:vide
     """
     print("Nombre de catégories dont le csv est créé")
-    for category in tqdm(UrlCategory.scrap_category(home)):
+    for category in tqdm(scrap_category.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
         write_csv.init_category_csv(category)
-        url_category = UrlCategory.browse_page(
-            UrlCategory.scrap_category(home)[category])
+        url_category = scrap_category.browse_page(
+            scrap_category.scrap_category(home)[category])
         for livre in url_category:
             write_csv.write_csv(scraping.extract(
                 url_category[livre], category), category)
@@ -41,9 +41,9 @@ def images(home):
     :return: vide
     """
     print("Nombre d'images téléchargée")
-    for category in tqdm(UrlCategory.scrap_category(home)):
-        url_category = UrlCategory.browse_page(
-            UrlCategory.scrap_category(home)[category])
+    for category in tqdm(scrap_category.scrap_category(home)):
+        url_category = scrap_category.browse_page(
+            scrap_category.scrap_category(home)[category])
         if not os.path.exists("Data/"+category + "/Images"):
             os.mkdir("Data/"+category + "/Images")
         for livre in url_category:
