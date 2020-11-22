@@ -2,17 +2,6 @@
 import requete
 
 
-def category_no_space(texte):
-    """
-    enlève l'espace et les sauts de lignes
-    :param texte: catégorie
-    :return: catégorie propre sans espace
-    """
-    category = texte.text.split("\n")
-    category = category[2].replace(" ", "")
-    return category
-
-
 def scrap_category(url_home):
     """
     Recherche des catégories sur la page d'accueil
@@ -26,8 +15,8 @@ def scrap_category(url_home):
         "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
     while k == 5:
-        categories_url[category_no_space(
-            secteur)] = "http://books.toscrape.com/"+secteur.get("href")
+        categories_url[secteur.text.strip()] = \
+            "http://books.toscrape.com/"+secteur.get("href")
         secteur = secteur.find_next("a")
         k = len(secteur.text.split("\n"))
     return categories_url
