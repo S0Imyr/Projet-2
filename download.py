@@ -1,6 +1,6 @@
-import Scraping
+import scraping
 import UrlCategory
-import Write_csv
+import write_csv
 import urllib
 import os
 from tqdm import tqdm
@@ -20,11 +20,11 @@ def create_file_cat(home):
     for category in tqdm(UrlCategory.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
-        Write_csv.init_category_csv(category)
+        write_csv.init_category_csv(category)
         url_category = UrlCategory.browse_page(
             UrlCategory.scrap_category(home)[category])
         for livre in url_category:
-            Write_csv.write_csv(Scraping.extract(
+            write_csv.write_csv(scraping.extract(
                 url_category[livre], category), category)
 
 
@@ -52,6 +52,6 @@ def images(home):
             for k in interdit:
                 format_title = format_title.replace(k, "")
             urllib.request.urlretrieve(
-                Scraping.extract(url_category[livre], category)
+                scraping.extract(url_category[livre], category)
                 ['image_url'], "Data/"+category+"/Images/" + format_title[:min(
                     50, len(str(format_title)))] + ".jpg")
