@@ -1,5 +1,5 @@
 # -- coding: utf-8 --
-import requete
+import requestest
 
 
 def available(table):
@@ -50,7 +50,7 @@ def extract(url, category):
     :param category: catégorie du livre
     :return: dictionnaire des informations du livre
     """
-    soup = requete.request_text(url)
+    soup = requestest.request_text(url)
     if soup.find("table", {"class": "table table-striped"}
                  ).find_all("td") is None:
         tab = ["tableau non trouvé"]*7
