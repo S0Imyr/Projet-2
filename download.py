@@ -40,7 +40,7 @@ def images(home):
     :param home: page d'accueil
     :return: vide
     """
-    print("Nombre d'images téléchargée")
+    print("Nombre de catégories dont les images sont téléchargées")
     for category in tqdm(scrap_category.scrap_category(home)):
         url_category = scrap_category.browse_page(
             scrap_category.scrap_category(home)[category])
