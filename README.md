@@ -4,6 +4,7 @@
 Sur le terminal tapper : <br>
 <ul>
     <li>git clone https://github.com/S0Imyr/Projet2.git </li>
+    <li>cd Projet2</li>
 </ul>
 <br>
 <b>Installer l'environnement virtuel :</b> <br>
@@ -29,7 +30,7 @@ Le téléchargement des images se lancent après.
 
 
 <h2> Trouver les données </h2>
-Dans le dossier Projet2, on retrouve un dossier Data.
+Dans le dossier Projet2, créé lors de la copie initiale, on retrouve un dossier Data.
 Le fichier Data contient un dossier par catégorie.
 Chaque fichier "catégorie" contient :
 <ul>
