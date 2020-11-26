@@ -16,7 +16,7 @@ def create_file_cat(home):
     :param home: page d'accueil
     :return:vide
     """
-    print("Nombre de catégories dont le csv est créé")
+    print("Nombre de catégories dont le csv est créé \n")
     for category in tqdm(scrap_category.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
@@ -40,7 +40,7 @@ def images(home):
     :param home: page d'accueil
     :return: vide
     """
-    print("Nombre de catégories dont les images sont téléchargées")
+    print("Nombre de catégories dont les images sont téléchargées \n")
     for category in tqdm(scrap_category.scrap_category(home)):
         url_category = scrap_category.browse_page(
             scrap_category.scrap_category(home)[category])
