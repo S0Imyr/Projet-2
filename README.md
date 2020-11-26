@@ -1,5 +1,7 @@
 # Projet 2
 <h2> Installation</h2>
+Sur le terminal se placer sur un dossier cible. <br>
+<br>
 <b>Copier les fichiers :</b> <br>
 Sur le terminal tapper successivement : <br>
 <ul>
