@@ -1,21 +1,21 @@
 # Projet 2
 <h2> Installation</h2>
 <b>Copier les fichiers :</b> <br>
-Sur le terminal tapper : <br>
+Sur le terminal tapper successivement : <br>
 <ul>
     <li>git clone https://github.com/S0Imyr/Projet2.git </li>
     <li>cd Projet2</li>
 </ul>
 <br>
 <b>Installer l'environnement virtuel :</b> <br>
-Sur le terminal tapper : <br>
+Sur le terminal tapper successivement : <br>
 <ul>
     <li>python -m venv env</li>
-    <li>env/Scripts/activate.bat</li>
+    <li>source env/Scripts/activate (ou "source env/bin/activate" sur Linux et Mac).</li>
 </ul>
 <br>
 <b>Installer les packages :</b> <br>
-Sur le terminal tapper successivement: <br>
+Sur le terminal tapper : <br>
 <ul>
     <li>pip install -r requirements.txt</li>
 </ul>
