@@ -3,6 +3,11 @@ import requestest
 
 
 def format_title(title):
+    """
+    remplace dans un titre les caratères interdit dans les noms de fichiers
+    :param title: titre
+    :return: titre formaté
+    """
     interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
     forma = str(title)
     for k in interdit:
