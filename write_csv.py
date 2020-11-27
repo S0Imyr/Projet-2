@@ -16,7 +16,7 @@ def init_category_csv(category):
                       'universal_ product_code (upc)', 'title',
                       'price_including_tax', 'price_excluding_tax',
                       'number_available', 'product_description',
-                      'category', 'review_rating', 'image_url']
+                      'category', 'review_rating', 'image_url', 'image_name']
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, dialect='excel')
         writer.writeheader()
@@ -38,7 +38,7 @@ def write_csv(dico, category):
                       'title', 'price_including_tax',
                       'price_excluding_tax', 'number_available',
                       'product_description', 'category',
-                      'review_rating', 'image_url']
+                      'review_rating', 'image_url', 'image_name']
         writer = csv.DictWriter(
             csvfile, fieldnames=fieldnames, dialect='excel')
         writer.writerow(dico)

@@ -16,7 +16,7 @@ def create_file_cat(home):
     :param home: page d'accueil
     :return:vide
     """
-    print("Nombre de catégories dont le csv est créé \n")
+    print("Nombre de catégories dont le csv est créé")
     for category in tqdm(scrap_category.scrap_category(home)):
         if not os.path.exists('Data/'+category):
             os.mkdir('Data/'+category)
@@ -40,17 +40,14 @@ def images(home):
     :param home: page d'accueil
     :return: vide
     """
-    print("Nombre de catégories dont les images sont téléchargées \n")
+    print("Nombre de catégories dont les images sont téléchargées")
     for category in tqdm(scrap_category.scrap_category(home)):
         url_category = scrap_category.browse_page(
             scrap_category.scrap_category(home)[category])
         if not os.path.exists("Data/"+category + "/Images"):
             os.mkdir("Data/"+category + "/Images")
         for livre in url_category:
-            interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
-            format_title = str(livre)
-            for k in interdit:
-                format_title = format_title.replace(k, "")
+            format_title = scraping.format_title(livre)
             urllib.request.urlretrieve(
                 scraping.extract(url_category[livre], category)
                 ['image_url'], "Data/"+category+"/Images/" + format_title[:min(

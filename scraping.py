@@ -2,6 +2,14 @@
 import requestest
 
 
+def format_title(title):
+    interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
+    forma = str(title)
+    for k in interdit:
+        forma = forma.replace(k, "")
+    return forma
+
+
 def available(table):
     """
     Extrait dans un tableau la phrase sur
@@ -82,9 +90,12 @@ def extract(url, category):
         image_url = "http://books.toscrape.com" + \
                 soup.find("div", {"class": "item active"}
                           ).findChild("img").get("src")[5:]
+    image_name = format_title(title)[:min(
+        50, len(str(format_title)))] + ".jpg"
+
     r = {"product_page_url": url, "universal_ product_code (upc)":
          upc, "title": title, "price_including_tax": price_tax,
          "price_excluding_tax": price, "number_available": nb_available,
          "product_description": description, "category": category,
-         "review_rating": rating, "image_url": image_url}
+         "review_rating": rating, "image_url": image_url, "image_name": image_name}
     return r
