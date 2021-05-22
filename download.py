@@ -8,13 +8,11 @@ from tqdm import tqdm
 
 def create_file_cat(home):
     """
-    Boucle sur l'ensemble des catégories,
-    crée un dossier de la catégorie s'il n'existe pas
-    et le csv à l'intérieur
-    puis sur l'ensemble des livres de la catégorie
-    extrait puis écris sur le csv les données de chaque livre
-    :param home: page d'accueil
-    :return:vide
+    Loop through all categories,
+    creates a folder of the category if it doesn't exist and the csv inside
+    then for all books in the category extract and write the data on the csv.
+    :param home: home page
+    :return: None
     """
     print("Nombre de catégories dont le csv est créé")
     for category in tqdm(scrap_category.scrap_category(home)):
@@ -30,15 +28,13 @@ def create_file_cat(home):
 
 def images(home):
     """
-    Boucle sur l'ensemble des catégories,
-    crée un dossier de la catégorie s'il n'existe pas
-    et le dossier images à l'intérieur
-    puis sur l'ensemble des livres de la catégorie
-    télécharge dans le dossier images, l'image
-    de chaque livre en la nommant en retirant les
-    caractères interdits et avec 50 caractères maximum
-    :param home: page d'accueil
-    :return: vide
+    Loop through all categories,
+    creates a folder of the category if it doesn't exist and the images folder inside
+    then on all the books in the category downloads in the images folder,
+    the image of each book by naming it by removing the
+    prohibited characters with a maximum of 50 characters
+    :param home: home page
+    :return: None
     """
     print("Nombre de catégories dont les images sont téléchargées")
     for category in tqdm(scrap_category.scrap_category(home)):

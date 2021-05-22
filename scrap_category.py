@@ -4,10 +4,10 @@ import requestest
 
 def scrap_category(url_home):
     """
-    Recherche des catégories sur la page d'accueil
-    s'adapte si nouvelles catégories sont ajoutées
-    :param url_home: page d'accueil
-    :return: le dictionnaire qui à la catégorie associe son url
+    Search for categories on the home page
+    adapts if new categories are added
+    :param url_home: home page
+    :return: the dictionary of categories and their url
     """
     categories_url = {}
     soup_home = requestest.request_text(url_home)
@@ -22,23 +22,22 @@ def scrap_category(url_home):
     return categories_url
 
 
-def page_livre_url(soupe):
+def page_books_url(soup):
     """
-    Extrait les livres et leurs url pour une page
-    :param soupe (beautifulsoup) de la page
-    :return: un dictionnaire qui à un titre associe son url
-    pour les livres de la page
+    Extract the books and their urls for a page
+    :param soup: page soup
+    :return: dictionary of title of books and their url for the given page (soup)
     """
     reponse = {}
-    livre = soupe.find("h3")
+    livre = soup.find("h3")
     test = True
     while test:
         lien = livre.find("a").get("href")[8:]
         if livre.find("a").get("title") in reponse:
-            titre = livre.find("a").get("title") + "bis"
+            title = livre.find("a").get("title") + "bis"
         else:
-            titre = livre.find("a").get("title")
-        reponse[titre] = "http://books.toscrape.com/catalogue" + lien
+            title = livre.find("a").get("title")
+        reponse[title] = "http://books.toscrape.com/catalogue" + lien
         test = livre.find_next("h3") is not None
         livre = livre.find_next("h3")
     return reponse
@@ -46,12 +45,9 @@ def page_livre_url(soupe):
 
 def browse_page(url_category):
     """
-    Parcourt les pages d'une catégorie
-    pour extraire tous les liens
-    des livres de la catégorie
-    :param url_category: l'url de la catégorie
-    :return: un dictionnaire qui à un titre associe son url
-    pour tous les livres de la catégorie
+    Browse the pages of a category to extract all links books in the category
+    :param url_category: category url
+    :return: dictionary of title of books and their url for the given category
     """
     url_base = url_category[:-10]
     i = 1
@@ -59,7 +55,7 @@ def browse_page(url_category):
     reponse = {}
     while test:
         soup = requestest.request_text(url_category)
-        d = page_livre_url(soup)
+        d = page_books_url(soup)
         reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None
         i += 1

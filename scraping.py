@@ -4,9 +4,9 @@ import requestest
 
 def format_title(title):
     """
-    remplace dans un titre les caratères interdit dans les noms de fichiers
-    :param title: titre
-    :return: titre formaté
+    Replace in a title the characters prohibited in the names of files
+    :param title: book title
+    :return: formatted title
     """
     interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
     forma = str(title)
@@ -17,11 +17,10 @@ def format_title(title):
 
 def available(table):
     """
-    Extrait dans un tableau la phrase sur
-    la disponibilité.
-    Puis extrait le nombre de la phrase
-    :param table: tableau d'informations du livre
-    :return: le nombre d'exemplaire disponible
+    Extract in a table the sentence about the availability
+    then extract the number of the sentence.
+    :param table: book information table
+    :return: the number of copies available
     """
     reponse = ""
     for k in table[5].text:
@@ -30,27 +29,26 @@ def available(table):
     return reponse
 
 
-def find_rating(soupe):
+def find_rating(soup):
     """
-    Cherche la note d'un livre dans la soupe
-    d'un beautifulsoup d'une page de livre
-    :param soupe: beautifulsoup d'une page de livre
-    :return: note du livre
+    Look for the book's rating in the beautifulsoup of a book page
+    :param soup: beautifulsoup of a book page
+    :return: book's rating
     """
     rating = 0
-    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating One"}) is not None:
         rating = 1
-    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating Two"}) is not None:
         rating = 2
-    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating Three"}) is not None:
         rating = 3
-    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating Four"}) is not None:
         rating = 4
-    if soupe.find("div", {"class": "col-sm-6 product_main"}).findChild(
+    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
             "p", {"class": "star-rating Five"}) is not None:
         rating = 5
     return rating
@@ -58,10 +56,10 @@ def find_rating(soupe):
 
 def extract(url, category):
     """
-    extrait les informations d'un livre
-    :param url: url du livre
-    :param category: catégorie du livre
-    :return: dictionnaire des informations du livre
+    Extract the informations of a book
+    :param url: book url
+    :param category: book category
+    :return: dictionary of book informations
     """
     soup = requestest.request_text(url)
     if soup.find("table", {"class": "table table-striped"}
@@ -98,9 +96,9 @@ def extract(url, category):
     image_name = format_title(title)[:min(
         50, len(str(format_title)))] + ".jpg"
 
-    r = {"product_page_url": url, "universal_ product_code (upc)":
+    response = {"product_page_url": url, "universal_ product_code (upc)":
          upc, "title": title, "price_including_tax": price_tax,
          "price_excluding_tax": price, "number_available": nb_available,
          "product_description": description, "category": category,
          "review_rating": rating, "image_url": image_url, "image_name": image_name}
-    return r
+    return response

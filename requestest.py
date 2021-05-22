@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 
 def request_text(url):
     """
-    Teste si un url est accessible puis créé une soupe avec beautiful soup
-    :param url: l'url de la page
-    :return: soupe de la page
+    Test if a url is accessible then create a soup with beautiful soup
+    :param url: url page
+    :return: page soup
     """
     reponse = requests.get(url)
     reponse.encoding = 'utf-8'

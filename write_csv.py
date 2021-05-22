@@ -3,11 +3,10 @@ import csv
 
 def init_category_csv(category):
     """
-    Crée un dossier de la catégorie indiqué,
-    et un fichier csv à l'intérieur
-    avec le même nom que la catégorie
-    :param category: catégorie à créer
-    :return: vide
+    Create a folder of the indicated category and a csv file inside
+    with the same name as the category
+    :param category: category to add
+    :return: None
     """
     with open('Data/'+category+'/'+category+'.csv',
               'w', newline='', encoding="utf-8") as csvfile:
@@ -24,12 +23,11 @@ def init_category_csv(category):
 
 def write_csv(dico, category):
     """
-    Ecris les informations d'un dictionnaire sur une
-    ligne, sachant que les titres du csv colle avec
-    les clés du dictionnaire
-    :param dico: dictionnaire de données d'un livre
-    :param category: catégorie du livre
-    :return: vide
+    Write the information from a dictionary on a line, 
+    knowing that the titles of the csv stick with dictionary keys
+    :param dico: dictionary of book's informations 
+    :param category: book's category
+    :return: None
     """
     with open('Data/'+category+'/'+category+'.csv', 'a',
               newline='', encoding="utf-8") as csvfile:
