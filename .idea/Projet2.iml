@@ -5,7 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv/Lib/site-packages/tqdm" />
       <excludeFolder url="file://$MODULE_DIR$/venv/Lib/site-packages/tqdm-4.52.0.dist-info" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Poetry (Projet-2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
