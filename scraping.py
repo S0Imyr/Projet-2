@@ -1,13 +1,15 @@
 # -- coding: utf-8 --
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
+from download import IMG_TITLE_MAX_LENGTH
+
+BASE_URL = "http://books.toscrape.com"
 # Position in the table for UPC, price without tax, price with tax and availability
 UPC_POSITION = 0
 PRICE_WITHOUT_TAX_POSITION = 2
 PRICE_WITH_TAX_POSITION = 3
 AVAILABILITY_POSITION = 5
-BASE_URL = "http://books.toscrape.com"
 
 
 def format_title(title: str) -> str:
@@ -84,7 +86,7 @@ def extract(url: str, category: str) -> dict:
     image_element = soup.find("div", {"class": "item active"}).findChild("img")
     image_url = BASE_URL + image_element.get("src")[5:] if image_element else "image non trouvée (extraction)"
     formatted_title = format_title(title)
-    image_name = formatted_title[:50] + ".jpg"
+    image_name = formatted_title[:IMG_TITLE_MAX_LENGTH] + ".jpg"
 
     response = {
         "product_page_url": url,
@@ -102,7 +104,7 @@ def extract(url: str, category: str) -> dict:
     return response
 
 
-def request_text(url: str):
+def request_text(url: str) -> BeautifulSoup:
     """
     Test if a URL is accessible, then create a BeautifulSoup object with the page content.
 
@@ -113,8 +115,8 @@ def request_text(url: str):
     try:
         response = requests.get(url)
         response.encoding = 'utf-8'
-        response.raise_for_status()  # Raise an exception if the request is not OK (HTTP 200)
+        response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
     except requests.exceptions.RequestException as e:
-        raise e  # Rethrow the exception to handle it at a higher level
+        raise e
