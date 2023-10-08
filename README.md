@@ -1,8 +1,10 @@
-# Projet 2
+# Web scraping
+
+Ceci est un projet d'apprentissage du scraping avec Python.
 
 ## Installation
 
-Sur le terminal se placer sur un dossier cible.
+Sur un terminal se placer sur un dossier cible.
 
 Puis suivre les étapes suivantes :
 1. Cloner le dépôt ici présent en tapant: `$ git clone https://github.com/S0Imyr/Projet2.git`
