@@ -3,7 +3,7 @@ import os
 import requests
 
 # Constants
-BASE_URL = "http://books.toscrape.com/index.html"
+HOME_URL = "http://books.toscrape.com/index.html"
 DATA_DIR = "data"
 
 
@@ -24,14 +24,14 @@ def check_connection(url: str) -> bool:
 
 
 def main():
-    if not check_connection(BASE_URL):
+    if not check_connection(HOME_URL):
         raise Exception("No internet connection available.")
 
     if not os.path.exists(DATA_DIR):
         os.mkdir(DATA_DIR)
 
-    download.scrap_and_create_csv_files(BASE_URL, data_dir=DATA_DIR)
-    download.download_book_images(BASE_URL, data_dir=DATA_DIR)
+    download.scrap_and_create_csv_files(HOME_URL, data_dir=DATA_DIR)
+    download.download_book_images(HOME_URL, data_dir=DATA_DIR)
 
 
 if __name__ == "__main__":

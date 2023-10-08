@@ -1,104 +1,120 @@
 # -- coding: utf-8 --
-import requestest
+from bs4 import BeautifulSoup
+import requests
+
+# Position in the table for UPC, price without tax, price with tax and availability
+UPC_POSITION = 0
+PRICE_WITHOUT_TAX_POSITION = 2
+PRICE_WITH_TAX_POSITION = 3
+AVAILABILITY_POSITION = 5
+BASE_URL = "http://books.toscrape.com"
 
 
-def format_title(title):
+def format_title(title: str) -> str:
     """
-    Replace in a title the characters prohibited in the names of files
-    :param title: book title
-    :return: formatted title
+    Replace prohibited characters in a title with characters allowed in filenames.
+
+    :param title: The book title.
+    :return: The formatted title.
     """
-    interdit = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
-    forma = str(title)
-    for k in interdit:
-        forma = forma.replace(k, "")
-    return forma
+    prohibited_chars = ["/", '\\', ":", "*", "\"", "<", ">", "?", "|"]
+    formatted_title = str(title)
+    for char in prohibited_chars:
+        formatted_title = formatted_title.replace(char, "")
+    return formatted_title
 
 
-def available(table):
+def available(table: list) -> str:
     """
-    Extract in a table the sentence about the availability
-    then extract the number of the sentence.
-    :param table: book information table
-    :return: the number of copies available
+    Extract the availability information from a table and return the number of copies available.
+
+    :param table: The book information table.
+    :return: The number of copies available as a string.
     """
-    reponse = ""
-    for k in table[5].text:
-        if k.isnumeric():
-            reponse += k
-    return reponse
-
-
-def find_rating(soup):
-    """
-    Look for the book's rating in the beautifulsoup of a book page
-    :param soup: beautifulsoup of a book page
-    :return: book's rating
-    """
-    rating = 0
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating One"}) is not None:
-        rating = 1
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Two"}) is not None:
-        rating = 2
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Three"}) is not None:
-        rating = 3
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Four"}) is not None:
-        rating = 4
-    if soup.find("div", {"class": "col-sm-6 product_main"}).findChild(
-            "p", {"class": "star-rating Five"}) is not None:
-        rating = 5
-    return rating
-
-
-def extract(url, category):
-    """
-    Extract the informations of a book
-    :param url: book url
-    :param category: book category
-    :return: dictionary of book informations
-    """
-    soup = requestest.request_text(url)
-    if soup.find("table", {"class": "table table-striped"}
-                 ).find_all("td") is None:
-        tab = ["tableau non trouvé"]*7
-    else:
-        tab = soup.find("table", {"class": "table table-striped"}
-                        ).find_all("td")
-
-    if soup.find("div", {"class": "col-sm-6 product_main"}
-                 ).find("h1").text is None:
-        title = "titre non trouvé lors de l'extraction"
-    else:
-        title = soup.find("div", {"class": "col-sm-6 product_main"}
-                          ).find("h1").text
-
-    upc = tab[0].text
-    price_tax = tab[2].text[1:]
-    price = tab[3].text[1:]
-    nb_available = available(tab)
-    if soup.find("div", {"id": "product_description"}) is None:
-        description = ""
-    else:
-        description = soup.find("div", {"id": "product_description"}
-                                ).find_next("p").text
-    rating = find_rating(soup)
-    if soup.find("div", {"class": "item active"}
-                 ).findChild("img").get("src")[5:] is None:
-        image_url = "image non trouvée (extraction)"
-    else:
-        image_url = "http://books.toscrape.com" + \
-                soup.find("div", {"class": "item active"}
-                          ).findChild("img").get("src")[5:]
-    image_name = format_title(title)[:min(
-        50, len(str(format_title)))] + ".jpg"
-
-    response = {"product_page_url": url, "universal_ product_code (upc)":
-         upc, "title": title, "price_including_tax": price_tax,
-         "price_excluding_tax": price, "number_available": nb_available,
-         "product_description": description, "category": category,
-         "review_rating": rating, "image_url": image_url, "image_name": image_name}
+    response = ""
+    for char in table[AVAILABILITY_POSITION].text:
+        if char.isnumeric():
+            response += char
     return response
+
+
+def find_rating(soup: BeautifulSoup) -> int:
+    """
+    Look for the book's rating in the BeautifulSoup of a book page.
+
+    :param soup: BeautifulSoup of a book page.
+    :return: Book's rating as an integer (1 to 5).
+    """
+    rating_map = {
+        "One": 1,
+        "Two": 2,
+        "Three": 3,
+        "Four": 4,
+        "Five": 5
+    }
+
+    product_main_div = soup.find("div", {"class": "col-sm-6 product_main"})
+
+    for class_name, rating_value in rating_map.items():
+        star_rating_element = product_main_div.findChild("p", {"class": f"star-rating {class_name}"})
+        if star_rating_element is not None:
+            return rating_value
+
+    return 0  # Return 0 if no rating is found
+
+
+def extract(url: str, category: str) -> dict:
+    """
+    Extract information about a book.
+
+    :param url: URL of the book.
+    :param category: Category of the book.
+    :return: Dictionary containing book information.
+    """
+    soup = request_text(url)
+    table = soup.find("table", {"class": "table table-striped"}).find_all("td")
+    title = soup.find("div", {"class": "col-sm-6 product_main"}).find("h1").text.strip()
+    upc = table[0].text
+    price_tax = table[2].text[1:]
+    price = table[3].text[1:]
+    nb_available = available(table)
+    description_element = soup.find("div", {"id": "product_description"})
+    description = description_element.find_next("p").text if description_element else ""
+    rating = find_rating(soup)
+    image_element = soup.find("div", {"class": "item active"}).findChild("img")
+    image_url = BASE_URL + image_element.get("src")[5:] if image_element else "image non trouvée (extraction)"
+    formatted_title = format_title(title)
+    image_name = formatted_title[:50] + ".jpg"
+
+    response = {
+        "product_page_url": url,
+        "universal_product_code (upc)": upc,
+        "title": title,
+        "price_including_tax": price_tax,
+        "price_excluding_tax": price,
+        "number_available": nb_available,
+        "product_description": description,
+        "category": category,
+        "review_rating": rating,
+        "image_url": image_url,
+        "image_name": image_name
+    }
+    return response
+
+
+def request_text(url: str):
+    """
+    Test if a URL is accessible, then create a BeautifulSoup object with the page content.
+
+    :param url: URL of the page
+    :return: BeautifulSoup object of the page content
+    :raises requests.exceptions.RequestException: if there's an issue with the request
+    """
+    try:
+        response = requests.get(url)
+        response.encoding = 'utf-8'
+        response.raise_for_status()  # Raise an exception if the request is not OK (HTTP 200)
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup
+    except requests.exceptions.RequestException as e:
+        raise e  # Rethrow the exception to handle it at a higher level

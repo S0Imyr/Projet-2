@@ -1,24 +1,24 @@
 # -- coding: utf-8 --
-import requestest
+from scraping import request_text
 
 
-def scrap_category(url_home):
+def scrap_category(url_home: str) -> dict:
     """
-    Search for categories on the home page
-    adapts if new categories are added
-    :param url_home: home page
-    :return: the dictionary of categories and their url
+    Search for categories on the home page and return a dictionary of category names and their URLs.
+
+    :param url_home: URL of the home page
+    :return: Dictionary of category names and their URLs
     """
     categories_url = {}
-    soup_home = requestest.request_text(url_home)
-    secteur = soup_home.find(
+    soup_home = request_text(url_home)
+    category = soup_home.find(
         "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
     while k == 5:
-        categories_url[secteur.text.strip()] = \
-            "http://books.toscrape.com/"+secteur.get("href")
-        secteur = secteur.find_next("a")
-        k = len(secteur.text.split("\n"))
+        categories_url[category.text.strip()] = \
+            "http://books.toscrape.com/"+category.get("href")
+        category = category.find_next("a")
+        k = len(category.text.split("\n"))
     return categories_url
 
 
@@ -54,7 +54,7 @@ def browse_page(url_category):
     test = True
     reponse = {}
     while test:
-        soup = requestest.request_text(url_category)
+        soup = request_text(url_category)
         d = page_books_url(soup)
         reponse.update(d)
         test = soup.find("li", {"class": "next"}) is not None

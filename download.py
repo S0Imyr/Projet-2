@@ -1,6 +1,7 @@
-import urllib
+
 from tqdm import tqdm
 from pathlib import Path
+import requests
 
 import scraping
 import scrap_category
@@ -11,14 +12,14 @@ IMG_TITLE_MAX_LENGTH = 50
 
 def scrap_and_create_csv_files(home_page: str, data_dir: str = 'data') -> None:
     """
-    Scrape data for all categories, create a folder for each category if it doesn't exist,
+    Scrap data for all categories, create a folder for each category if it doesn't exist,
     and create a CSV file inside it. Then extract and write the data to the CSV.
 
     :param home_page: The home page URL.
     :param data_dir: The directory where data will be stored (default is 'data').
     :return: None
     """
-    print("Avancement du nombre de catégories dont le csv est créé")
+    print("Progression du nombre de catégories dont le csv est créé")
     for category in tqdm(scrap_category.scrap_category(home_page)):
         category_path = Path(data_dir) / category
         category_path.mkdir(parents=True, exist_ok=True)
@@ -40,7 +41,7 @@ def download_book_images(home_page: str, data_dir: str = 'data') -> None:
     :param data_dir: The directory where data will be stored (default is 'data').
     :return: None
     """
-    print("Avancement du nombre de catégories dont les images sont téléchargées")
+    print("Progression du nombre de catégories dont les images sont téléchargées")
     for category in tqdm(scrap_category.scrap_category(home_page)):
         category_path = Path(data_dir) / category / "Images"
         category_path.mkdir(parents=True, exist_ok=True)
@@ -51,4 +52,10 @@ def download_book_images(home_page: str, data_dir: str = 'data') -> None:
             image_url = scraping.extract(url_category[book], category)['image_url']
             image_name = format_title[:min(IMG_TITLE_MAX_LENGTH, len(str(format_title)))] + ".jpg"
             image_path = category_path / image_name
-            urllib.request.urlretrieve(image_url, image_path)
+            try:
+                response = requests.get(image_url)
+                response.raise_for_status()
+                with open(image_path, "wb") as image_file:
+                    image_file.write(response.content)
+            except requests.exceptions.RequestException as e:
+                print(f"Error downloading image: {e}")
