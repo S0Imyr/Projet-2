@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "web_scraping"
+name = "devpyprojet2"
 version = "0.1.0"
 description = "Web scraping with Python"
 authors = ["rlossec <raphaelossec@gmail.com>"]

@@ -27,3 +27,4 @@ Le fichier Data contient un dossier par catégorie.
 Chaque fichier "catégorie" contient :
  - un fichier csv au nom de la catégorie</li>
  - un dossier images avec les images de tous les livres de la "catégorie".</li>
+
