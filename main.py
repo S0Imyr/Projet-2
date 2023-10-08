@@ -17,13 +17,17 @@ def check_internet_connection(url):
         response = requests.get(url)
         response.raise_for_status()
         return True
-    except requests.exceptions.RequestException:
+    except requests.exceptions.ConnectionError:
         return False
 
 
 def main():
+    if not check_internet_connection(BASE_URL):
+        raise Exception("No internet connection available.")
+
     if not os.path.exists(DATA_DIR):
         os.mkdir(DATA_DIR)
+
     download.scrap_and_create_csv_files(BASE_URL, data_dir=DATA_DIR)
     download.download_book_images(BASE_URL, data_dir=DATA_DIR)
 
