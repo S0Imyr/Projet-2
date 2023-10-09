@@ -1,44 +1,51 @@
 # -- coding: utf-8 --
 
 import csv
+from pathlib import Path
+
+DATA_FOLDER = Path('data')
 
 
-def init_category_csv(category):
+def init_category_csv(category: str) -> None:
     """
-    Create a folder of the indicated category and a csv file inside
-    with the same name as the category
-    :param category: category to add
+    Create a folder for the indicated category and a CSV file inside it
+    with the same name as the category.
+
+    :param category: The category name.
     :return: None
     """
-    with open('Data/'+category+'/'+category+'.csv',
-              'w', newline='', encoding="utf-8") as csvfile:
+    folder_path = DATA_FOLDER / category
+    csv_file_path = folder_path / f'{category}.csv'
+    folder_path.mkdir(parents=True, exist_ok=True)
+    with open(csv_file_path, 'w', newline='', encoding="utf-8") as csvfile:
         csvfile.write("sep = ,\n")
-        fieldnames = ['product_page_url',
-                      'universal_product_code (upc)', 'title',
-                      'price_including_tax', 'price_excluding_tax',
-                      'number_available', 'product_description',
-                      'category', 'review_rating', 'image_url', 'image_name']
-        writer = csv.DictWriter(
-            csvfile, fieldnames=fieldnames, dialect='excel')
+        fieldnames = [
+            'product_page_url', 'universal_product_code (upc)', 'title',
+            'price_including_tax', 'price_excluding_tax', 'number_available',
+            'product_description', 'category', 'review_rating',
+            'image_url', 'image_name'
+        ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, dialect='excel')
         writer.writeheader()
 
 
-def write_csv(dico, category):
+def write_csv(data: dict, category: str) -> None:
     """
-    Write the information from a dictionary on a line, 
-    knowing that the titles of the csv stick with dictionary keys
-    :param dico: dictionary of book's informations 
-    :param category: book's category
+    Write the information from a dictionary to a CSV file.
+    The keys of the dictionary should match the CSV fieldnames.
+
+    :param data: Dictionary of book's information.
+    :param category: Book's category.
     :return: None
     """
-    with open('Data/'+category+'/'+category+'.csv', 'a',
-              newline='', encoding="utf-8") as csvfile:
-        fieldnames = ['product_page_url',
-                      'universal_product_code (upc)',
-                      'title', 'price_including_tax',
-                      'price_excluding_tax', 'number_available',
-                      'product_description', 'category',
-                      'review_rating', 'image_url', 'image_name']
-        writer = csv.DictWriter(
-            csvfile, fieldnames=fieldnames, dialect='excel')
-        writer.writerow(dico)
+    csv_file_path = DATA_FOLDER / category / f'{category}.csv'
+
+    with open(csv_file_path, 'a', newline='', encoding="utf-8") as csvfile:
+        fieldnames = [
+            'product_page_url', 'universal_product_code (upc)', 'title',
+            'price_including_tax', 'price_excluding_tax', 'number_available',
+            'product_description', 'category', 'review_rating',
+            'image_url', 'image_name'
+        ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, dialect='excel')
+        writer.writerow(data)

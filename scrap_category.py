@@ -1,6 +1,8 @@
 # -- coding: utf-8 --
 
-from scraping import request_text
+from scraping import request_text, BASE_URL
+from bs4 import BeautifulSoup
+from typing import Dict
 
 
 def scrap_category(url_home: str) -> dict:
@@ -12,8 +14,7 @@ def scrap_category(url_home: str) -> dict:
     """
     categories_url = {}
     soup_home = request_text(url_home)
-    category = soup_home.find(
-        "ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
+    category = soup_home.find("ul", {"class": "nav nav-list"}).find("li").find("li").find("a")
     k = 5
     while k == 5:
         categories_url[category.text.strip()] = \
@@ -23,42 +24,52 @@ def scrap_category(url_home: str) -> dict:
     return categories_url
 
 
-def page_books_url(soup):
+def page_books_url(soup: BeautifulSoup) -> dict:
     """
-    Extract the books and their urls for a page
-    :param soup: page soup
-    :return: dictionary of title of books and their url for the given page (soup)
+    Extract the books and their urls for a page.
+
+    :param soup: BeautifulSoup object representing the page.
+    :return: Dictionary of book titles and their URLs for the given page.
     """
-    reponse = {}
-    livre = soup.find("h3")
-    test = True
-    while test:
-        lien = livre.find("a").get("href")[8:]
-        if livre.find("a").get("title") in reponse:
-            title = livre.find("a").get("title") + "bis"
-        else:
-            title = livre.find("a").get("title")
-        reponse[title] = "http://books.toscrape.com/catalogue" + lien
-        test = livre.find_next("h3") is not None
-        livre = livre.find_next("h3")
-    return reponse
+    books_info = {}
+    book_heading = soup.find("h3")
+
+    while book_heading:
+        book_link = book_heading.find("a")
+        book_title = book_link.get("title")
+        book_url = f"{BASE_URL}/catalogue{book_link.get('href')[8:]}"
+
+        # Ensure unique titles by appending "bis" to duplicates
+        if book_title in books_info:
+            book_title += "bis"
+
+        books_info[book_title] = book_url
+        book_heading = book_heading.find_next("h3")
+
+    return books_info
 
 
-def browse_page(url_category):
+def browse_page(url_category: str) -> Dict[str, str]:
     """
-    Browse the pages of a category to extract all links books in the category
-    :param url_category: category url
-    :return: dictionary of title of books and their url for the given category
+    Browse the pages of a category to extract all links to books in the category.
+
+    :param url_category: Category URL.
+    :return: Dictionary of book titles and their URLs for the given category.
     """
     url_base = url_category[:-10]
     i = 1
-    test = True
-    reponse = {}
-    while test:
+    books_urls = {}
+
+    while True:
         soup = request_text(url_category)
-        d = page_books_url(soup)
-        reponse.update(d)
-        test = soup.find("li", {"class": "next"}) is not None
+        books_info = page_books_url(soup)
+        books_urls.update(books_info)
+
+        next_page = soup.find("li", {"class": "next"})
+        if next_page is None:
+            break
+
         i += 1
-        url_category = url_base + "page-" + str(i) + ".html"
-    return reponse
+        url_category = f"{url_base}page-{i}.html"
+
+    return books_urls

@@ -8,8 +8,6 @@ import scraping
 import scrap_category
 import write_csv
 
-IMG_TITLE_MAX_LENGTH = 50
-
 
 def scrap_and_create_csv_files(home_page: str, data_dir: str = 'data') -> None:
     """
@@ -51,7 +49,7 @@ def download_book_images(home_page: str, data_dir: str = 'data') -> None:
         for book in url_category:
             format_title = scraping.format_title(book)
             image_url = scraping.extract(url_category[book], category)['image_url']
-            image_name = format_title[:min(IMG_TITLE_MAX_LENGTH, len(str(format_title)))] + ".jpg"
+            image_name = format_title[:min(scraping.IMG_TITLE_MAX_LENGTH, len(str(format_title)))] + ".jpg"
             image_path = category_path / image_name
             try:
                 response = requests.get(image_url)

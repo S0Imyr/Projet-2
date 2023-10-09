@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from download import IMG_TITLE_MAX_LENGTH
+IMG_TITLE_MAX_LENGTH = 50
 
 BASE_URL = "http://books.toscrape.com"
 # Position in the table for UPC, price without tax, price with tax and availability
