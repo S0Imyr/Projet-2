@@ -1,6 +1,6 @@
 # -- coding: utf-8 --
 
-import download
+from scraping import download
 import os
 import requests
 

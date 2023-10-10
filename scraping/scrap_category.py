@@ -1,8 +1,9 @@
 # -- coding: utf-8 --
 
-from scraping import request_text, BASE_URL
 from bs4 import BeautifulSoup
 from typing import Dict
+
+from scraping.scraping import request_text, BASE_URL
 
 
 def scrap_category(url_home: str) -> dict:

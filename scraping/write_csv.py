@@ -3,7 +3,7 @@
 import csv
 from pathlib import Path
 
-DATA_FOLDER = Path('data')
+DATA_FOLDER = Path('../data')
 
 
 def init_category_csv(category: str) -> None:
@@ -17,7 +17,7 @@ def init_category_csv(category: str) -> None:
     folder_path = DATA_FOLDER / category
     csv_file_path = folder_path / f'{category}.csv'
     folder_path.mkdir(parents=True, exist_ok=True)
-    with open(csv_file_path, 'w', newline='', encoding="utf-8") as csvfile:
+    with open(csv_file_path, 'w', encoding="utf-8") as csvfile:
         csvfile.write("sep = ,\n")
         fieldnames = [
             'product_page_url', 'universal_product_code (upc)', 'title',
@@ -40,7 +40,7 @@ def write_csv(data: dict, category: str) -> None:
     """
     csv_file_path = DATA_FOLDER / category / f'{category}.csv'
 
-    with open(csv_file_path, 'a', newline='', encoding="utf-8") as csvfile:
+    with open(csv_file_path, 'a', encoding="utf-8") as csvfile:
         fieldnames = [
             'product_page_url', 'universal_product_code (upc)', 'title',
             'price_including_tax', 'price_excluding_tax', 'number_available',
