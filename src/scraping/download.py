@@ -4,9 +4,8 @@ from tqdm import tqdm
 from pathlib import Path
 import requests
 
-from scraping import scraping
-from scraping import scrap_category
-from scraping import write_csv
+from src.scraping import scrap_category
+from src.scraping import write_csv, scraping
 
 
 def scrap_and_create_csv_files(home_page: str, data_dir: str = 'data') -> None:
