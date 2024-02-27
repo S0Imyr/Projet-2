@@ -7,8 +7,10 @@ import requests
 from src.scraping import scrap_category
 from src.scraping import write_csv, scraping
 
+DATA_FOLDER = 'data'
 
-def scrap_and_create_csv_files(home_page: str, data_dir: str = 'data') -> None:
+
+def scrap_and_create_csv_files(home_page: str, data_dir: str = DATA_FOLDER) -> None:
     """
     Scrap data for all categories, create a folder for each category if it doesn't exist,
     and create a CSV file inside it. Then extract and write the data to the CSV.
@@ -22,14 +24,14 @@ def scrap_and_create_csv_files(home_page: str, data_dir: str = 'data') -> None:
         category_path = Path(data_dir) / category
         category_path.mkdir(parents=True, exist_ok=True)
         write_csv.init_category_csv(category)
-        url_category = scrap_category.browse_page(
+        url_category = scrap_category.browse_pages(
             scrap_category.scrap_category(home_page)[category])
         for book in url_category:
             write_csv.write_csv(scraping.extract(
                 url_category[book], category), category)
 
 
-def download_book_images(home_page: str, data_dir: str = 'data') -> None:
+def download_book_images(home_page: str, data_dir: str = DATA_FOLDER) -> None:
     """
     Loop through all categories, create a folder for each category if it doesn't exist, along with
     an 'Images' subfolder. Then download the image of each book in the category, naming it by
@@ -43,7 +45,7 @@ def download_book_images(home_page: str, data_dir: str = 'data') -> None:
     for category in tqdm(scrap_category.scrap_category(home_page)):
         category_path = Path(data_dir) / category / "Images"
         category_path.mkdir(parents=True, exist_ok=True)
-        url_category = scrap_category.browse_page(
+        url_category = scrap_category.browse_pages(
             scrap_category.scrap_category(home_page)[category])
         for book in url_category:
             format_title = scraping.format_title(book)

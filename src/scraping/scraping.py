@@ -120,5 +120,5 @@ def request_text(url: str) -> BeautifulSoup:
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
     except requests.exceptions.RequestException as e:
-        print("The request fails.")
-        raise e
+        print(f"The request fails for the url {url}.")
+        raise requests.exceptions.RequestException from e
