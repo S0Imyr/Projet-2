@@ -38,7 +38,9 @@ def page_books_url(url_page: str) -> Dict[str, str]:
     for book_tag in book_tags:
         if book_tag.get("title"):
             book_title = book_tag.get("title")
-            book_url = urljoin(BASE_URL, book_tag.get('href'))
+            href = book_tag.get("href")
+            clean_href = href.lstrip("../")
+            book_url = f"{BASE_URL}/catalogue/{clean_href}"
             # Ensure unique titles by appending "bis" to duplicates
             if book_title in book_urls:
                 book_title += "bis"
@@ -65,5 +67,5 @@ def browse_pages(url_category: str) -> Dict[str, str]:
         if next_page is None:
             break
         i += 1
-        page_url = f"{BASE_URL}page-{i}.html"
+        page_url = url_category.replace('index.html', f"page-{i}.html")
     return books_urls
