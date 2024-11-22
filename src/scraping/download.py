@@ -10,7 +10,7 @@ from src.scraping import write_csv, scraping
 DATA_FOLDER = 'data'
 
 
-def scrap_and_create_csv_files(home_page: str, data_dir: str = DATA_FOLDER) -> None:
+def scrap_and_create_csv_files(home_page: str, data_dir: Path = DATA_FOLDER) -> None:
     """
     Scrap data for all categories, create a folder for each category if it doesn't exist,
     and create a CSV file inside it. Then extract and write the data to the CSV.
@@ -31,7 +31,7 @@ def scrap_and_create_csv_files(home_page: str, data_dir: str = DATA_FOLDER) -> N
                 url_category[book], category), category)
 
 
-def download_book_images(home_page: str, data_dir: str = DATA_FOLDER) -> None:
+def download_book_images(home_page: str, data_dir: Path = DATA_FOLDER) -> None:
     """
     Loop through all categories, create a folder for each category if it doesn't exist, along with
     an 'Images' subfolder. Then download the image of each book in the category, naming it by
